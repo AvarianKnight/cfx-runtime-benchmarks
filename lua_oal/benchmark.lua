@@ -1,6 +1,6 @@
 
 CreateThread(function()
-	local interationCount = 1000000
+	local interationCount = GetConvarInt("benchmark_iterationCount", 100000)
 
 	ProfilerEnterScope("Natives")
 
@@ -17,7 +17,7 @@ CreateThread(function()
 
 	local a = ""
 	for i = 1, interationCount do
-		a = a .. ""
+		a = a .. "a"
 	end
 
 	ProfilerExitScope()

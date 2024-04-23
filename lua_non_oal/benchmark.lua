@@ -1,6 +1,7 @@
 
 CreateThread(function()
-	local interationCount = 1000000
+	local interationCount = GetConvarInt("benchmark_iterationCount", 100000) + 1; -- no cheating >:(
+	local useRuntimeOptimizations = GetConvarInt("benchmark_useRuntimeOptimizations", 0) == 1;
 
 	ProfilerEnterScope("Natives")
 
@@ -15,9 +16,17 @@ CreateThread(function()
 
 	ProfilerEnterScope("Concat")
 
-	local a = ""
-	for i = 1, interationCount do
-		a = a .. "a"
+	if not useRuntimeOptimizations then
+		local str = ""
+		for i = 1, interationCount do
+			str = str .. "a"
+		end
+	else
+		local str_tbl = {}
+		for i = 1, interationCount do
+			str_tbl[i] = "a"
+		end
+		local str = table.concat(str_tbl)
 	end
 
 	ProfilerExitScope()
@@ -34,7 +43,7 @@ CreateThread(function()
 	ProfilerEnterScope("Vector2 Math")
 
 	local pos1 = vector2(x, y)
-	local pos2 = vector2(x, y)
+	local pos2 = vector2(x2, y2)
 
 	for i = 1, interationCount do
 		local dist = #(pos1 - pos2)
@@ -46,7 +55,7 @@ CreateThread(function()
 
 
 	local pos1 = vector3(x, y, z)
-	local pos2 = vector3(x, y, z)
+	local pos2 = vector3(x2, y2, z2)
 
 	for i = 1, interationCount do
 		local dist = #(pos1 - pos2)

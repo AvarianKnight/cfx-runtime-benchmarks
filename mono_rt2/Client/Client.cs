@@ -1,17 +1,20 @@
 ﻿using CitizenFX.Core;
 using static CitizenFX.RedM.Native.Natives;
+using System.Text;
 
 namespace CsClient
 {
     public class ClientMain : BaseScript
     {
-        public ClientMain() {
+        public ClientMain()
+        {
             AsyncFunction();
         }
 
         async Coroutine AsyncFunction()
         {
-            int interationCount = 1000000;
+            int interationCount = GetConvarInt("benchmark_iterationCount", 100000);
+            bool useRuntimeOptimizations = GetConvarInt("benchmark_useRuntimeOptimizations", 0) == 1;
 
             ProfilerEnterScope("Natives");
             int playerId = PlayerPedId();
@@ -24,15 +27,32 @@ namespace CsClient
 
             ProfilerExitScope();
 
-            // string str = "";
 
             ProfilerEnterScope("Concat");
 
-            // Disabled due to GC murdering the test
-            // for (int i = 0; i < interationCount; i++)
-            // {
-            //     str = str + "a";
-            // }
+            //Disabled due to GC murdering the test
+            if (!useRuntimeOptimizations)
+            {
+                string str = "";
+                if (interationCount >= 10000)
+                {
+                    for (int i = 0; i < interationCount; i++)
+                    {
+                        str += "a";
+                    }
+                }
+            }
+            else
+            {
+                StringBuilder strBuilder = new();
+                for (int i = 0; i < interationCount; i++)
+                {
+                    // we could do str.Append("a", iterationCount); but this
+                    // would kind of be cheating
+                    strBuilder.Append("a");
+                }
+                String str = strBuilder.ToString();
+            }
 
             ProfilerExitScope();
 

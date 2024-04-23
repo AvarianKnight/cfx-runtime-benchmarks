@@ -3,7 +3,10 @@ const getDistance2d = (c1, c2) => Math.sqrt((Math.pow(c1[0] - c2[0], 2)) + (Math
 const getDistance3d = (c1, c2) => Math.sqrt((Math.pow(c1[0] - c2[0], 2)) + (Math.pow(c1[1] - c2[1], 2)) + (Math.pow(c1[2] - c2[2], 2)));
 
 setImmediate(() => {
-	const interationCount = 1000000
+	const interationCount = GetConvarInt("benchmark_iterationCount", 100000)
+	// doing any of the optimizations of other runtimes doesn't work in JS, +=
+	// is the fastest in JS
+	// const useRuntimeOptimizations = GetConvarInt("benchmark_useRuntimeOptimizations", 0) == 1;
 
 	ProfilerEnterScope("Natives")
 
@@ -18,9 +21,9 @@ setImmediate(() => {
 
 	ProfilerEnterScope("Concat")
 
-	let a = "";
+	let str = "";
 	for (let i = 0; i < interationCount; i++) {
-		a = a + "a"
+		str += "a"
 	}
 
 	ProfilerExitScope()
