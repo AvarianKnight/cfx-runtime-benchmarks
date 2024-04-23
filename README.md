@@ -1,4 +1,4 @@
-This is some benchmarking to test the performance of the different runtimes in FiveM
+This is some benchmarking to test the performance of the different runtimes in Cfx
 
 It should be noted that C# could not finish the string concatenation test because of it frequently trying to do stop-the-world garbage collection because every concatenation would create a new string object.
 
