@@ -6,20 +6,20 @@ All of these tests were done with 1,000,000 iterations
 
 | Client | Lua OAL | Lua | JS | C# rt2 |
 |--- | --- | --- | --- | ---|
-| Native Execution | 198.71ms | 637.99ms | 697.24 | 86.58ms |
+| Native Execution | 216.31ms | 523.12ms | 693.73ms | 185.86ms |
 | Concatenation | 16.8s  | 16.8s | 180.97ms | DNF |
-| 2D Distance | 180.99ms  | 178.83ms  | 33.23ms | 4.16ms |
-| 3D Distance | 184.48ms  | 183.60ms |  33.34ms | 6.71ms |
+| 2D Distance | 16.5ms | 16.5ms | 6.62ms | 4.19ms |
+| 3D Distance | 17.37ms | 17.37ms | 6.26ms | 4.34ms |
 
 
 All of these tests were done with 10,000 iterations
 
 | Client | Lua OAL | Lua | JS | C# rt2 |
 |--- | --- | --- | --- | ---|
-| Native Execution | 2.40ms | 6.19ms | 48.15ms | 1.59ms |
+| Native Execution | 2.24ms | 5.25ms | 48.15ms | 2.39ms |
 | Concatenation | 1.80ms  | 1.89ms | 4.72ms | 40.83ms |
-| 2D Distance | 1.89ms  | 2.43ms | 15.99ms | 0.13ms |
-| 3D Distance | 1.91ms  |  1.86ms | 15.87ms | 90µs |
+| 2D Distance | 0.17ms | 0.17ms | 15.99ms | 0.11ms |
+| 3D Distance | 0.18ms | 0.18ms | 15.87ms | 65µs |
 
 
 All of these tests were done with 1,000,000 iterations with the optimized way to concatenate a large amount of strings in the specific runtime.

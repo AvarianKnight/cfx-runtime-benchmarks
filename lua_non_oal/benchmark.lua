@@ -1,7 +1,10 @@
+local IS_FIVEM = GetGameName() == "fivem";
 
 CreateThread(function()
-	local interationCount = GetConvarInt("benchmark_iterationCount", 100000) + 1; -- no cheating >:(
+	local interationCount = GetConvarInt("benchmark_iterationCount", 1000000) + 1; -- no cheating >:(
 	local useRuntimeOptimizations = GetConvarInt("benchmark_useRuntimeOptimizations", 0) == 1;
+
+	local MARKER_TYPE = IS_FIVEM and 28 or 0xD6445746
 
 	ProfilerEnterScope("Natives")
 
@@ -9,25 +12,26 @@ CreateThread(function()
 	local coords = GetEntityCoords(playerPed)
 
 	for i = 1, interationCount do
-		DrawMarker(0xD6445746, coords, 0, 0, 0, 0, 0, 0, 0.3, 0.2, 0.15, 150, 30, 30, 222, false, false, 0, true, nil, nil, false)
+		DrawMarker(MARKER_TYPE, coords, 0, 0, 0, 0, 0, 0, 0.3, 0.2, 0.15, 150, 30, 30, 222, false, false, 0, true,
+		nil, nil, false)
 	end
 
 	ProfilerExitScope()
 
 	ProfilerEnterScope("Concat")
 
-	if not useRuntimeOptimizations then
-		local str = ""
-		for i = 1, interationCount do
-			str = str .. "a"
-		end
-	else
-		local str_tbl = {}
-		for i = 1, interationCount do
-			str_tbl[i] = "a"
-		end
-		local str = table.concat(str_tbl)
-	end
+	-- if not useRuntimeOptimizations then
+	-- 	local str = ""
+	-- 	for i = 1, interationCount do
+	-- 		str = str .. "a"
+	-- 	end
+	-- else
+	-- 	local str_tbl = {}
+	-- 	for i = 1, interationCount do
+	-- 		str_tbl[i] = "a"
+	-- 	end
+	-- 	local str = table.concat(str_tbl)
+	-- end
 
 	ProfilerExitScope()
 
@@ -62,6 +66,4 @@ CreateThread(function()
 	end
 
 	ProfilerExitScope()
-
 end)
-

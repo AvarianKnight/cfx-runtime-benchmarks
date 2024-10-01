@@ -1,6 +1,11 @@
-﻿using CitizenFX.Core;
+﻿using System.Text;
+using CitizenFX.Core;
+
+#if IS_REDM
 using static CitizenFX.RedM.Native.Natives;
-using System.Text;
+#else
+using static CitizenFX.FiveM.Native.Natives;
+#endif
 
 namespace CsClient
 {
@@ -8,21 +13,31 @@ namespace CsClient
     {
         public ClientMain()
         {
-            AsyncFunction();
+            Benchmark();
         }
 
-        async Coroutine AsyncFunction()
+        async Coroutine Benchmark()
         {
-            int interationCount = GetConvarInt("benchmark_iterationCount", 100000);
+            int interationCount = GetConvarInt("benchmark_iterationCount", 1_000_000);
             bool useRuntimeOptimizations = GetConvarInt("benchmark_useRuntimeOptimizations", 0) == 1;
 
             ProfilerEnterScope("Natives");
-            int playerId = PlayerPedId();
-            Vector3 coords = GetEntityCoords(playerId, true, true);
+            int playerPed = PlayerPedId();
+#if IS_REDM
+            Vector3 coords = GetEntityCoords(playerId, false, true);
+#else
+            Vector3 coords = GetEntityCoords(playerPed, false);
+#endif
+
+#if IS_REDM
+            const u32 MARKER_TYPE = 0xD6445746;
+#else
+            const int MARKER_TYPE = 28;
+#endif
 
             for (int i = 0; i < interationCount; i++)
             {
-                DrawMarker(0xD6445746, coords[0], coords[1], coords[2] + (10.0f / i), 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.2f, 0.15f, 30, 150, 30, 222, false, false, 0, true, null, null, false);
+                DrawMarker(MARKER_TYPE, coords.X, coords.Y, coords.Z, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.2f, 0.15f, 30, 150, 30, 222, false, false, 0, true, null, null, false);
             }
 
             ProfilerExitScope();
@@ -33,14 +48,14 @@ namespace CsClient
             //Disabled due to GC murdering the test
             if (!useRuntimeOptimizations)
             {
-                string str = "";
-                if (interationCount >= 10000)
-                {
-                    for (int i = 0; i < interationCount; i++)
-                    {
-                        str += "a";
-                    }
-                }
+                // string str = "";
+                // if (interationCount <= 10000)
+                // {
+                //     for (int i = 0; i < interationCount; i++)
+                //     {
+                //         str += "a";
+                //     }
+                // }
             }
             else
             {
@@ -67,9 +82,9 @@ namespace CsClient
             float z2 = (float)random.NextDouble() * 12000 - 6000;
 
 
-            ProfilerEnterScope("Vector2 Math");
 
             {
+                ProfilerEnterScope("Vector2 Math");
                 var pos1 = new Vector2(x, y);
                 var pos2 = new Vector2(x2, y2);
 
@@ -78,14 +93,12 @@ namespace CsClient
                     Vector2.Distance(ref pos1, ref pos2, out float dist);
                 }
 
+                ProfilerExitScope();
             }
-            ProfilerExitScope();
-
-
-            ProfilerEnterScope("Vector3 Math");
 
 
             {
+                ProfilerEnterScope("Vector3 Math");
                 var pos1 = new Vector3(x, y, z);
                 var pos2 = new Vector3(x2, y2, z2);
 
@@ -93,11 +106,8 @@ namespace CsClient
                 {
                     Vector3.Distance(ref pos1, ref pos2, out float dist);
                 }
+                ProfilerExitScope();
             }
-
-
-            ProfilerExitScope();
-
 
         }
     }

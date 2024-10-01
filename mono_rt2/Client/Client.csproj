@@ -1,28 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
   <PropertyGroup>
     <IsClient>true</IsClient>
-    <DefineConstants>IS_CLIENT</DefineConstants>
     <TargetFramework>net48</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <RootNamespace>PmaCore</RootNamespace>
+    <RootNamespace>Benchmarks</RootNamespace>
     <AssemblyName>Client.net</AssemblyName>
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="dotnet-mono" Version="*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="utils\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <!-- <Compile Include="..\Shared\**\*.cs" Exclude="..\Shared\bin\**\*;..\Shared\obj\**\*" /> -->
-    <!-- <Compile Include="..\GlobalTypes.cs" Link="GlobalTypes.cs" /> -->
+    <Compile Include="..\GlobalTypes.cs" Link="GlobalTypes.cs" />
   </ItemGroup>
 
 
@@ -43,7 +32,7 @@
       <HintPath>..\dependencies\CitizenFX.Core.dll</HintPath>
     </Reference>
     <Reference Include="CitizenFX.RedM.Native">
-      <HintPath>..\dependencies\CitizenFX.RedM.Native.dll</HintPath>
+      <HintPath>..\dependencies\CitizenFX.FiveM.Native.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

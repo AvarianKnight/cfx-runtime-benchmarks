@@ -1,6 +1,9 @@
+local IS_FIVEM = GetGameName() == "fivem";
 
 CreateThread(function()
-	local interationCount = GetConvarInt("benchmark_iterationCount", 100000)
+	local interationCount = GetConvarInt("benchmark_iterationCount", 1000000) + 1
+
+	local MARKER_TYPE = IS_FIVEM and 28 or 0xD6445746
 
 	ProfilerEnterScope("Natives")
 
@@ -8,19 +11,34 @@ CreateThread(function()
 	local coords = GetEntityCoords(playerPed)
 
 	for i = 1, interationCount do
-		DrawMarker(0xD6445746, coords.x, coords.y, coords.z + (i * 0.1), 0, 0, 0, 0, 0, 0, 0.3, 0.2, 0.15, 150, 30, 30, 222, false, false, 0, true, nil, nil, false)
+		DrawMarker(
+			MARKER_TYPE,
+			coords.x, coords.y, coords.z,
+			0, 0, 0,
+			0, 0, 0,
+			0.2, 0.2, 0.2,
+			255, 0, 0,
+			255,
+			false,
+			false,
+			0,
+			false,
+			nil,
+			nil,
+			false
+		);
 	end
 
 	ProfilerExitScope()
 
-	ProfilerEnterScope("Concat")
-
-	local a = ""
-	for i = 1, interationCount do
-		a = a .. "a"
-	end
-
-	ProfilerExitScope()
+	-- ProfilerEnterScope("Concat")
+	--
+	-- local a = ""
+	-- for i = 1, interationCount do
+	-- 	a = a .. "a"
+	-- end
+	--
+	-- ProfilerExitScope()
 
 	-- don't include in the actual benchmark
 	local x = math.random() * 12000 - 6000
@@ -53,5 +71,4 @@ CreateThread(function()
 	end
 
 	ProfilerExitScope()
-
 end)
