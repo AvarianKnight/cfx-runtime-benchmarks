@@ -18,8 +18,8 @@ All of these tests were done with 10,000 iterations
 |--- | --- | --- | --- | ---|
 | Native Execution | 2.24ms | 5.25ms | 48.15ms | 2.39ms |
 | Concatenation | 1.80ms  | 1.89ms | 4.72ms | 40.83ms |
-| 2D Distance | 0.17ms | 0.17ms | 15.99ms | 0.11ms |
-| 3D Distance | 0.18ms | 0.18ms | 15.87ms | 65µs |
+| 2D Distance | 0.17ms | 0.17ms | 1.09ms | 0.11ms |
+| 3D Distance | 0.18ms | 0.18ms | 1.03ms | 65µs |
 
 
 All of these tests were done with 1,000,000 iterations with the optimized way to concatenate a large amount of strings in the specific runtime.
