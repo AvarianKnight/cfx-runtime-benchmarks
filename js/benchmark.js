@@ -6,33 +6,82 @@ const Delay = (ms) => new Promise((res) => setTimeout(res, ms));
 let hitRecording = false
 
 const IS_FIVEM = GetGameName() == "fivem";
+const IS_SERVER = IsDuplicityVersion();
 
 setImmediate(() => {
-    const interationCount = GetConvarInt("benchmark_iterationCount", 1_000_000)
+    const iterationCount = GetConvarInt("benchmark_iterationCount", 1_000_000)
     // doing any of the optimizations of other runtimes doesn't work in JS, +=
     // is the fastest in JS
     // const useRuntimeOptimizations = GetConvarInt("benchmark_useRuntimeOptimizations", 0) == 1;
 
-    // FiveM/RedM have the same invocation method so we just want to change
-    // the marker type
-    const MARKER_TYPE = IS_FIVEM ? 28 : 0xD6445746;
+    if (!IS_SERVER) {
+        // FiveM/RedM have the same invocation method so we just want to change
+        // the marker type
+        const MARKER_TYPE = IS_FIVEM ? 28 : 0xD6445746;
 
-    ProfilerEnterScope("Natives")
+        const playerPed = PlayerPedId();
+        ProfilerEnterScope("Void Return type Natives")
 
-    const playerPed = PlayerPedId()
-    const coords = GetEntityCoords(playerPed)
+        const coords = GetEntityCoords(playerPed);
 
 
-    for (let i = 0; i < interationCount; i++) {
-        DrawMarker(MARKER_TYPE, coords[0], coords[1], coords[2], 0, 0, 0, 0, 0, 0, 0.2, 0.2, 0.15, 250, 0, 0, 255, false, false, 0, true, null, null, false);
+        for (let i = 0; i < iterationCount; i++) {
+            DrawMarker(MARKER_TYPE, coords[0], coords[1], coords[2], 0, 0, 0, 0, 0, 0, 0.2, 0.2, 0.15, 250, 0, 0, 255, false, false, 0, true, null, null, false);
+        }
+
+        ProfilerExitScope();
+
+        ProfilerEnterScope("Number Return type Natives");
+
+
+        for (let i = 0; i < iterationCount; i++) {
+            GetEntityForwardX(playerPed)
+        }
+
+        ProfilerExitScope();
+
+        ProfilerEnterScope("Vec return type natives");
+
+        for (let i = 0; i < iterationCount; i++) {
+            GetEntityCoords(playerPed);
+        }
+
+        ProfilerExitScope();
+
+    } else {
+
+        ProfilerEnterScope("Void Return type Natives");
+
+        for (let i = 0; i < iterationCount; i++) {
+            WasEventCanceled();
+        }
+
+        ProfilerExitScope();
+
+        ProfilerEnterScope("Number return type natives");
+
+        const ped = GetGamePool("CPed")[0];
+        if (!ped) throw new Error("Please join the server if you're trying to run benchmarks.");
+
+        for (let i = 0; i < iterationCount; i++) {
+            GetPedDesiredHeading(ped);
+        }
+
+        ProfilerExitScope();
+
+        ProfilerEnterScope("Vec return type natives");
+
+        for (let i = 0; i < iterationCount; i++) {
+            GetEntityCoords(ped);
+        }
+
+        ProfilerExitScope();
     }
-
-    ProfilerExitScope()
 
     ProfilerEnterScope("Concat")
 
     let str = "";
-    for (let i = 0; i < interationCount; i++) {
+    for (let i = 0; i < iterationCount; i++) {
         str += "a"
     }
 
@@ -53,7 +102,7 @@ setImmediate(() => {
         const pos1 = [x, y]
         const pos2 = [x2, y2]
 
-        for (let i = 0; i < interationCount; i++) {
+        for (let i = 0; i < iterationCount; i++) {
             const dist = getDistance2d(pos1, pos2)
         }
 
@@ -66,7 +115,7 @@ setImmediate(() => {
         const pos1 = [x, y, z]
         const pos2 = [x2, y2, z2]
 
-        for (let i = 0; i < interationCount; i++) {
+        for (let i = 0; i < iterationCount; i++) {
             const dist = getDistance3d(pos1, pos2)
         }
 
