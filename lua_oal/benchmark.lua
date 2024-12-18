@@ -1,32 +1,57 @@
 local IS_FIVEM = GetGameName() == "fivem";
 
+local GetEntityCoords = GetEntityCoords
+local DrawMarker = DrawMarker
+local GetEntityCoords = GetEntityCoords
+local GetEntityForwardX = GetEntityForwardX
+local CancelEvent = CancelEvent
+local GetTimecycleVarCount = GetTimecycleVarCount
+
 CreateThread(function()
-	local interationCount = GetConvarInt("benchmark_iterationCount", 1000000) + 1
+	local iterationCount = GetConvarInt("benchmark_iterationCount", 1000000) + 1
 
 	local MARKER_TYPE = IS_FIVEM and 28 or 0xD6445746
 
-	ProfilerEnterScope("Natives")
+	ProfilerEnterScope("Void Return type Natives")
 
-	local playerPed = PlayerPedId()
-	local coords = GetEntityCoords(playerPed)
+	local coords = GetEntityCoords(playerPed);
 
-	for i = 1, interationCount do
-		DrawMarker(
-			MARKER_TYPE,
-			coords.x, coords.y, coords.z,
-			0, 0, 0,
-			0, 0, 0,
-			0.2, 0.2, 0.2,
-			255, 0, 0,
-			255,
-			false,
-			false,
-			0,
-			false,
-			nil,
-			nil,
-			false
-		);
+	for i = 1, iterationCount do
+		DrawMarker(MARKER_TYPE, coords.x, coords.y, coords.z, 0, 0, 0, 0, 0, 0, 0.2, 0.2, 0.15, 250, 0, 0, 255, false, false, 0, true, nil,
+			nil, false);
+	end
+
+	ProfilerExitScope();
+
+	ProfilerEnterScope("Number Return type Natives");
+
+
+	for i = 1, iterationCount do
+		GetEntityForwardX(playerPed)
+	end
+
+	ProfilerExitScope();
+
+	ProfilerEnterScope("Vec return type natives");
+
+	for i = 1, iterationCount do
+		GetEntityCoords(playerPed);
+	end
+
+	ProfilerExitScope();
+	ProfilerEnterScope("Void Cfx Return Type")
+
+	for i = 1, iterationCount do
+		CancelEvent()
+	end
+
+	ProfilerExitScope()
+
+
+	ProfilerEnterScope("Number Cfx Return Type")
+
+	for i = 1, iterationCount do
+		local count = GetTimecycleVarCount()
 	end
 
 	ProfilerExitScope()
@@ -34,7 +59,7 @@ CreateThread(function()
 	-- ProfilerEnterScope("Concat")
 	--
 	-- local a = ""
-	-- for i = 1, interationCount do
+	-- for i = 1, iterationCount do
 	-- 	a = a .. "a"
 	-- end
 	--
@@ -54,7 +79,7 @@ CreateThread(function()
 	local pos1 = vector2(x, y)
 	local pos2 = vector2(x2, y2)
 
-	for i = 1, interationCount do
+	for i = 1, iterationCount do
 		local dist = #(pos1 - pos2)
 	end
 
@@ -66,7 +91,7 @@ CreateThread(function()
 	local pos1 = vector3(x, y, z)
 	local pos2 = vector3(x2, y2, z2)
 
-	for i = 1, interationCount do
+	for i = 1, iterationCount do
 		local dist = #(pos1 - pos2)
 	end
 
