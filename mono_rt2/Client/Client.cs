@@ -21,10 +21,12 @@ namespace CsClient
             int interationCount = GetConvarInt("benchmark_iterationCount", 1_000_000);
             bool useRuntimeOptimizations = GetConvarInt("benchmark_useRuntimeOptimizations", 0) == 1;
 
-            ProfilerEnterScope("Natives");
-            int playerPed = PlayerPedId();
+            ProfilerEnterScope("Void Return type Natives");
+
+            var playerPed = PlayerPedId();
+
 #if IS_REDM
-            Vector3 coords = GetEntityCoords(playerId, false, true);
+            Vector3 coords = GetEntityCoords(playerPed, false, true);
 #else
             Vector3 coords = GetEntityCoords(playerPed, false);
 #endif
@@ -35,12 +37,51 @@ namespace CsClient
             const int MARKER_TYPE = 28;
 #endif
 
+
             for (int i = 0; i < interationCount; i++)
             {
                 DrawMarker(MARKER_TYPE, coords.X, coords.Y, coords.Z, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.2f, 0.15f, 30, 150, 30, 222, false, false, 0, true, null, null, false);
             }
 
-            ProfilerExitScope();
+        	ProfilerExitScope();
+
+        	ProfilerEnterScope("Number Return type Natives");
+
+            for (int i = 0; i < interationCount; i++)
+            {
+        		GetEntityForwardX(playerPed);
+            }
+
+        	ProfilerExitScope();
+
+        	ProfilerEnterScope("Vec return type natives");
+
+            for (int i = 0; i < interationCount; i++)
+            {
+        		GetEntityCoords(playerPed, true);
+            }
+
+        	ProfilerExitScope();
+
+        	ProfilerEnterScope("Void Cfx Return Type");
+
+            for (int i = 0; i < interationCount; i++)
+            {
+        		CancelEvent();
+            }
+            
+        	ProfilerExitScope();
+
+
+        	ProfilerEnterScope("Number Cfx Return Type");
+
+            for (int i = 0; i < interationCount; i++)
+            {
+        		GetTimecycleVarCount();
+            }
+
+        	ProfilerExitScope();
+
 
 
             ProfilerEnterScope("Concat");
