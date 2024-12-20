@@ -6,7 +6,11 @@ All of these tests were done with 1,000,000 iterations
 
 | Client | Lua OAL | Lua | JS | C# rt2 |
 |--- | --- | --- | --- | ---|
-| Native Execution | 216.31ms | 523.12ms | 693.73ms | 185.86ms |
+| Void Return Types | 206.68ms | 328.61ms | 349.68ms | 176.00ms |
+| Number Return Types | 144.49ms | 143.23ms | 209.47ms | 104.10ms |
+| Vec Return Type | 137.70ms | 142.76ms | 521.45ms | 113.79ms |
+| Cfx Void Return Type | 16.28ms | 40.97ms | 40.22ms | 14.34ms |
+| Cfx Number Return Type | 16.43ms | 47.51ms | 71.28ms | 14.27ms |
 | Concatenation | 16.8s  | 16.8s | 180.97ms | DNF |
 | 2D Distance | 16.5ms | 16.5ms | 6.62ms | 4.19ms |
 | 3D Distance | 17.37ms | 17.37ms | 6.26ms | 4.34ms |
@@ -16,7 +20,11 @@ All of these tests were done with 10,000 iterations
 
 | Client | Lua OAL | Lua | JS | C# rt2 |
 |--- | --- | --- | --- | ---|
-| Native Execution | 2.24ms | 5.25ms | 48.15ms | 2.39ms |
+| Void Return Types | 2.15ms | 3.45ms | 7.13ms | 2.37ms |
+| Number Return Types | 1.50ms | 1.48ms | 3.59ms | 1.12ms |
+| Vec Return Type | 1.42ms | 1.53ms | 6.80ms | 1.20ms |
+| Cfx Void Return Type | 0.16ms | 0.41ms | 0.98ms | 0.20ms |
+| Cfx Number Return Type | 0.17ms | 0.48ms | 1.34ms | 0.20ms |
 | Concatenation | 1.80ms  | 1.89ms | 4.72ms | 40.83ms |
 | 2D Distance | 0.17ms | 0.17ms | 1.09ms | 0.11ms |
 | 3D Distance | 0.18ms | 0.18ms | 1.03ms | 65µs |

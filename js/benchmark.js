@@ -28,7 +28,6 @@ setImmediate(() => {
         for (let i = 0; i < iterationCount; i++) {
             DrawMarker(MARKER_TYPE, coords[0], coords[1], coords[2], 0, 0, 0, 0, 0, 0, 0.2, 0.2, 0.15, 250, 0, 0, 255, false, false, 0, true, null, null, false);
         }
-
         ProfilerExitScope();
 
         ProfilerEnterScope("Number Return type Natives");
@@ -46,7 +45,27 @@ setImmediate(() => {
             GetEntityCoords(playerPed);
         }
 
+
         ProfilerExitScope();
+
+        	ProfilerEnterScope("Void Cfx Return Type");
+
+            for (let i = 0; i < iterationCount; i++)
+            {
+        		CancelEvent();
+            }
+            
+        	ProfilerExitScope();
+
+
+        	ProfilerEnterScope("Number Cfx Return Type");
+
+            for (let i = 0; i < iterationCount; i++)
+            {
+        		GetTimecycleVarCount();
+        }
+
+        	ProfilerExitScope();
 
     } else {
 
